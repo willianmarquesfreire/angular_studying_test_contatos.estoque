@@ -1,5 +1,6 @@
 <html>
     <head>
+        <meta charset="utf-8">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
@@ -9,15 +10,37 @@
 
             });
         </script>
+        <style>
+            .input-group {
+                margin-top: 5px;
+            }
+        </style>
     </head>
     <body ng-app="estoque">
         <div class="container-fluid" ng-controller="estCtrl">
             <form>
                 <div class="form-group">
-                    <label for="descricao">Descrição:</label>
-                    <input type="text" name="descricao" id="descricao" ng-model="descricao" class="form-control">
-                    <label for="qtd">Quantidade:</label>
-                    <input type="number" name="qtd" id="qtd" ng-model="qtd" class="form-control">
+                    <div class="input-group">
+                        <label for="descricao" class="input-group-addon">Descrição</label>
+                        <input type="text" name="descricao" id="descricao" ng-model="descricao" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <label for="qtd" class="input-group-addon">Quantidade: </label>
+                        <input type="number" name="qtd" id="qtd" ng-model="qtd" class="form-control">
+                    </div>
+                    <div class="input-group">
+                        <label for="valor" class="input-group-addon">$</label>
+                        <input type="text" class="form-control" id="valor" name="valor" placeholder="0.00">
+                        <div class="input-group-addon">
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">0.00</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="">.00</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
