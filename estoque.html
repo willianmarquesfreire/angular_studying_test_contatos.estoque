@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-messages/angular-messages.js"></script>
+        <script>
+            var app = angular.module('estoque', []);
+            app.controller('estCtrl', function($scope) {
+
+            });
+        </script>
+    </head>
+    <body ng-app="estoque">
+        <div class="container-fluid" ng-controller="estCtrl">
+            <form>
+                <div class="form-group">
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" name="descricao" id="descricao" ng-model="descricao" class="form-control">
+                    <label for="qtd">Quantidade:</label>
+                    <input type="number" name="qtd" id="qtd" ng-model="qtd" class="form-control">
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
