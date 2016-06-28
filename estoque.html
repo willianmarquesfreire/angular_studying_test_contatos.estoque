@@ -2,47 +2,101 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+        <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script>
-            var app = angular.module('estoque', []);
-            app.controller('estCtrl', function($scope) {
-
+            var app = angular.module("estoque", []);
+            app.controller("estCtrl", function($scope) {
+                $scope.estoque = [{descricao: '1', qtd: 1, valor: 1.00}];
+                $scope.cadastrar = function(produto) {
+                    $scope.estoque.push(produto);
+                    delete $scope.produto;
+                };
+                $scope.deletaProduto = function($index) {
+                    $scope.estoque.splice($index, 1);
+                };
+                $scope.alteraProduto = function($index) {
+                    $scope.produto = $scope.estoque[$index];
+                    $scope.produto.alterar = true;
+                }
+                $scope.alteraProdutoSalvar = function($index) {
+                    delete $scope.produto;
+                }
+                
             });
         </script>
         <style>
             .input-group {
-                margin-top: 5px;
+                margin-top: 2px;
+            }
+            #table {
+                margin: 15px 15px 0 15px;
             }
         </style>
     </head>
-    <body ng-app="estoque">
-        <div class="container-fluid" ng-controller="estCtrl">
+    <body>
+    <div ng-app="estoque" ng-controller="estCtrl">
+        <div class="container-fluid">
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href="#" class="navbar-brand">
+                            Estoque
+                        </a>
+                    </div>
+                </div>
+            </nav>
             <form>
                 <div class="form-group">
                     <div class="input-group">
                         <label for="descricao" class="input-group-addon">Descrição</label>
-                        <input type="text" name="descricao" id="descricao" ng-model="descricao" class="form-control">
+                        <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" class="form-control" placeholder="Digite uma descrição">
                     </div>
                     <div class="input-group">
                         <label for="qtd" class="input-group-addon">Quantidade: </label>
-                        <input type="number" name="qtd" id="qtd" ng-model="qtd" class="form-control">
+                        <input type="number" name="qtd" id="qtd" ng-model="produto.qtd" class="form-control" placeholder="Digite uma quantidade">
                     </div>
                     <div class="input-group">
-                        <label for="valor" class="input-group-addon">$</label>
-                        <input type="text" class="form-control" id="valor" name="valor" placeholder="0.00">
-                        <div class="input-group-addon">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                                <span class="sr-only">0.00</span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="">.00</a></li>
-                            </ul>
-                        </div>
+                        <label for="valor" class="input-group-addon">$ </label>
+                        <input type="text" name="valor" id="valor" ng-model="produto.valor" class="form-control" placeholder="Digite um Valor">
+                        <span class="input-group-addon">.00</span>
                     </div>
                 </div>
             </form>
+            <div class="btn-group btn-group-justified" role="group"></div>
+                <button type="button" ng-click="cadastrar(produto)" id="cadastrar" class="btn btn-success">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Cadastrar
+                </button>
+                <button type="button" id="limpar" class="btn btn-warning">
+                    <span class="glyphicon glyphicon-minus"></span> Limpar Campos
+                </button>
+                <button type="button" id="alterar" class="btn btn-info" ng-if="produto.alterar" ng-click="alteraProdutoSalvar($index)">
+                    <span class="glyphicon glyphicon-minus"></span> Alterar
+                </button>
+            </div>
+            <div class="panel panel-default" id="table">
+                <div class="panel-heading">Listagem do Estoque</div>
+                <table class="table">
+                    <thead>
+                        <th>Descrição</th>
+                        <th>Quantidade</th>
+                        <th>Valor</th>
+                        <th></th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="produto in estoque">
+                            <td>{{produto.descricao}}</td>
+                            <td>{{produto.qtd}}</td>
+                            <td>{{produto.valor}}</td>
+                            <td><a href="" ng-click="deletaProduto($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            <td><a href="" ng-click="alteraProduto($index)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
     </body>
 </html>
