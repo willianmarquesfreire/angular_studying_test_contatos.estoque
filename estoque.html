@@ -22,7 +22,10 @@
                 }
                 $scope.alteraProdutoSalvar = function($index) {
                     delete $scope.produto;
-                }
+                };
+                $scope.limpaProduto = function() {
+                    delete $scope.produto;
+                };
                 
             });
         </script>
@@ -65,14 +68,14 @@
                 </div>
             </form>
             <div class="btn-group btn-group-justified" role="group"></div>
-                <button type="button" ng-click="cadastrar(produto)" id="cadastrar" class="btn btn-success">
+                <button type="button" ng-click="cadastrar(produto)" id="cadastrar" class="btn btn-success" ng-if="!produto.alterar">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Cadastrar
-                </button>
-                <button type="button" id="limpar" class="btn btn-warning">
-                    <span class="glyphicon glyphicon-minus"></span> Limpar Campos
                 </button>
                 <button type="button" id="alterar" class="btn btn-info" ng-if="produto.alterar" ng-click="alteraProdutoSalvar($index)">
                     <span class="glyphicon glyphicon-minus"></span> Alterar
+                </button>
+                <button type="reset" id="limpar" class="btn btn-warning" ng-click="limpaProduto()">
+                    <span class="glyphicon glyphicon-minus"></span> Limpar Campos
                 </button>
             </div>
             <div class="panel panel-default" id="table">
