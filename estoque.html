@@ -20,6 +20,7 @@
                 };
                 $scope.deletaProduto = function($index) {
                     $scope.estoque.splice($index, 1);
+                    $scope.produtoForm.$setPristine();
                 };
                 $scope.alteraProduto = function($index) {
                     $scope.produto = $scope.estoque[$index];
@@ -57,16 +58,23 @@
                             Estoque
                         </a>
                     </div>
-                    <div ng-messages="produtoForm.descricao.$error">
-                        //aquii
+                </div>
+                <div ng-messages="produtoForm.descricao.$error" ng-show="produtoForm.descricao.$dirty && produtoForm.descricao.$invalid" class="alert alert-danger">
+                    <div ng-message="required">
+                        Por favor, preencha o campo descrição.
+                    </div>
+                </div>
+                <div ng-messages="produtoForm.qtd.$error" ng-show="produtoForm.qtd.$dirty && produtoForm.qtd.$invalid" class="alert alert-danger">
+                    <div ng-message="required">
+                        Por favor, preencha o campo quantidade.
                     </div>
                 </div>
             </nav>
             <form name="produtoForm">
                 <div class="form-group">
-                    <div class="input-group">
+                    <div class="input-group" ng-class="produtoForm.descricao.$error.required && produtoForm.descricao.$dirty ? 'has-error' : 'has-warning'">
                         <label for="descricao" class="input-group-addon">Descrição</label>
-                        <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" ng-required="true" class="form-control" placeholder="Digite uma descrição">
+                        <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" ng-required="true" class="form-control form-control-success" placeholder="Digite uma descrição">
                     </div>
                     <div class="input-group">
                         <label for="qtd" class="input-group-addon">Quantidade: </label>

@@ -20,6 +20,9 @@
             .negrito {
                 font-weight: bold;
             }
+            input.ng-invalid {
+                background-color: pink;
+            }
         </style>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
@@ -57,6 +60,7 @@
                     $scope.criterioDeOrdenacao = campo;
                     $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
                 }
+                $('#form1').validator();
             });
         </script>
    </head>
@@ -83,21 +87,14 @@
                 </tr>
             </table>
             <hr>
-            <form name="contatoForm">
-                <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="nome" ng-required="true" ng-minlength="10">
+            <form id="form1" name="contatoForm" data-toggle="validator" role="form">
+                <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="nome" ng-required="true" ng-minlength="10" required>
                 <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
                 <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' group by operadora.categoria for operadora in operadoras | orderBy:'nome'">
                     <option value="">Selecione uma operadora</option>
                 </select>
             </form>
-            <div ng-messages="contatoForm.nome.$error" class="alert alert-danger" ng-show="contatoForm.nome.$dirty">
-                <div ng-message="required">
-                    Por favor, preencha o nome!
-                </div>
-                <div ng-message="minlength">
-                    O campo nome deve ter no mínimo 10 caracteres.
-                </div>
-            </div>
+            
 
             <div ng-messages="contatoForm.telefone.$error" class="alert alert-danger" ng-show="contatoForm.telefone.$dirty">
                 <div ng-message="required">
