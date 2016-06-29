@@ -8,7 +8,12 @@
         <script>
             var app = angular.module("estoque", []);
             app.controller("estCtrl", function($scope) {
-                $scope.estoque = [{descricao: '1', qtd: 1, valor: 1.00}];
+                $scope.estoque = [
+                    {descricao: '5', qtd: 6, valor: 1.00},
+                    {descricao: '3', qtd: 3, valor: 5.00},
+                    {descricao: '4', qtd: 1, valor: 2.00},
+                    {descricao: '2', qtd: 2, valor: 4.00}
+                ];
                 $scope.cadastrar = function(produto) {
                     $scope.estoque.push(produto);
                     delete $scope.produto;
@@ -26,6 +31,10 @@
                 $scope.limpaProduto = function() {
                     delete $scope.produto;
                 };
+                $scope.ordenarPor = function(campo) {
+                    $scope.criterioOrdenacao = campo;
+                    $scope.direcaoOrdenacao = !$scope.direcaoOrdenacao;
+                }
                 
             });
         </script>
@@ -48,17 +57,20 @@
                             Estoque
                         </a>
                     </div>
+                    <div ng-messages="produtoForm.descricao.$error">
+                        //aquii
+                    </div>
                 </div>
             </nav>
-            <form>
+            <form name="produtoForm">
                 <div class="form-group">
                     <div class="input-group">
                         <label for="descricao" class="input-group-addon">Descrição</label>
-                        <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" class="form-control" placeholder="Digite uma descrição">
+                        <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" ng-required="true" class="form-control" placeholder="Digite uma descrição">
                     </div>
                     <div class="input-group">
                         <label for="qtd" class="input-group-addon">Quantidade: </label>
-                        <input type="number" name="qtd" id="qtd" ng-model="produto.qtd" class="form-control" placeholder="Digite uma quantidade">
+                        <input type="number" name="qtd" id="qtd" ng-model="produto.qtd" ng-required="true" class="form-control" placeholder="Digite uma quantidade">
                     </div>
                     <div class="input-group">
                         <label for="valor" class="input-group-addon">$ </label>
@@ -68,10 +80,10 @@
                 </div>
             </form>
             <div class="btn-group btn-group-justified" role="group"></div>
-                <button type="button" ng-click="cadastrar(produto)" id="cadastrar" class="btn btn-success" ng-if="!produto.alterar">
+                <button type="button" ng-click="cadastrar(produto)" id="cadastrar" ng-disabled="produtoForm.$invalid" class="btn btn-success" ng-if="!produto.alterar">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Cadastrar
                 </button>
-                <button type="button" id="alterar" class="btn btn-info" ng-if="produto.alterar" ng-click="alteraProdutoSalvar($index)">
+                <button type="button" id="alterar" class="btn btn-info" ng-if="produto.alterar" ng-disabled="produtoForm.$invalid" ng-click="alteraProdutoSalvar($index)">
                     <span class="glyphicon glyphicon-minus"></span> Alterar
                 </button>
                 <button type="reset" id="limpar" class="btn btn-warning" ng-click="limpaProduto()">
@@ -82,14 +94,14 @@
                 <div class="panel-heading">Listagem do Estoque</div>
                 <table class="table">
                     <thead>
-                        <th>Descrição</th>
+                        <th><a href="" ng-click="ordenarPor('descricao')">Descrição</a></th>
                         <th>Quantidade</th>
                         <th>Valor</th>
                         <th></th>
                         <th></th>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="produto in estoque">
+                        <tr ng-repeat="produto in estoque | orderBy:criterioOrdenacao:direcaoOrdenacao">
                             <td>{{produto.descricao}}</td>
                             <td>{{produto.qtd}}</td>
                             <td>{{produto.valor}}</td>
