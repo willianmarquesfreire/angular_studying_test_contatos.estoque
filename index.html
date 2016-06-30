@@ -20,9 +20,6 @@
             .negrito {
                 font-weight: bold;
             }
-            input.ng-invalid {
-                background-color: pink;
-            }
         </style>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
@@ -60,7 +57,6 @@
                     $scope.criterioDeOrdenacao = campo;
                     $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
                 }
-                $('#form1').validator();
             });
         </script>
    </head>
