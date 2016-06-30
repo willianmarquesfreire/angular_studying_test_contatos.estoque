@@ -7,7 +7,7 @@
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script>
             var app = angular.module("estoque", []);
-            var API = "http://192.168.1.110:3000";
+            var API = "http://localhost:3000";
             app.controller("estCtrl", function($scope, $http) {
                 
                 var carregaProdutos = function() {
@@ -46,9 +46,9 @@
                             $scope.produtoForm.$setPristine();
                         });
                 };
-                $scope.limpaProduto = function(opt) {
+                $scope.limpaProduto = function() {
+                    $scope.produtoForm.$setPristine();
                     delete $scope.produto;
-                    $scope.produto.alterar = opt;
                 };
                 $scope.ordenarPor = function(campo) {
                     $scope.criterioOrdenacao = campo;
@@ -112,10 +112,10 @@
                 <button type="button" id="alterar" ng-click="alteraProdutoSalvar(produto.index)" class="btn btn-info" ng-if="produto.alterar" ng-disabled="produtoForm.$invalid" ng-click="alteraProdutoSalvar($index)">
                     <span class="glyphicon glyphicon-minus"></span> Alterar
                 </button>
-                <button type="reset" id="limpar" class="btn btn-warning" ng-click="limpaProduto(false)" ng-if="!produto.alterar">
+                <button type="reset" id="limparCampos" class="btn btn-warning" ng-if="!produto.alterar" ng-click="limpaProduto()">
                     <span class="glyphicon glyphicon-minus"></span> Limpar Campos
                 </button>
-                <button type="reset" id="cancelar" class="btn btn-warning" ng-click="limpaProduto(true)" ng-if="produto.alterar">
+                <button type="reset" id="cancelar" class="btn btn-warning" ng-click="limpaProduto()" ng-if="produto.alterar">
                     <span class="glyphicon glyphicon-minus"></span> Cancelar
                 </button>
             </div>
@@ -134,8 +134,8 @@
                             <td>{{produto.descricao}}</td>
                             <td>{{produto.qtd}}</td>
                             <td>{{produto.valor}}</td>
-                            <td><a href="" ng-click="deletaProduto($index)" ng-if="!produto.alterar"><span class="glyphicon glyphicon-trash"></span></a></td>
-                            <td><a href="" ng-click="alteraProduto($index)" ng-if="!produto.alterar"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td><a href="" ng-click="deletaProduto($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            <td><a href="" ng-click="alteraProduto($index)"><span class="glyphicon glyphicon-pencil"></span></a></td>
                         </tr>
                     </tbody>
                 </table>
