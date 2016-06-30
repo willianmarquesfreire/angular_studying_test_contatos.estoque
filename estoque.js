@@ -2,12 +2,7 @@ var http = require('http');
 var qs = require('querystring');
 var url = require('url');
 
-var estoque = [
-    {descricao: '5', qtd: 6, valor: 1.00},
-    {descricao: '3', qtd: 3, valor: 5.00},
-    {descricao: '4', qtd: 1, valor: 2.00},
-    {descricao: '2', qtd: 2, valor: 4.00}
-    ];
+var estoque = [];
 
 var port = 3000;
 var app = http.createServer(function(req,res, callback) {
@@ -25,7 +20,7 @@ var app = http.createServer(function(req,res, callback) {
         case 'POST':
             req.on('data', function(data) {
                 queryData += data;
-                if(queryData.length > 1e6) {
+                if (queryData.length > 1e6) {
                     queryData = "";
                     res.writeHead(413, {'Content-Type': 'text/plain'}).end();
                     req.connection.destroy();
@@ -42,7 +37,24 @@ var app = http.createServer(function(req,res, callback) {
             console.log('Requisitado!');
             break;
         case 'PUT':
-            console.log('Alterado');
+            var $index = req.url.toString().substr(1,req.url.length);
+            
+            req.on('data', function(data) {
+                queryData += data;
+                if (queryData.length > 1e6) {
+                    queryData = "";
+                    res.writeHead(413, {'Content-Type': 'text/plain'}).end();
+                    req.connection.destroy();
+                }
+            });
+            
+            req.on('end', function(data) {
+                var obj = JSON.parse(queryData);
+                delete obj["index"];
+                estoque[$index] = obj;
+            });
+            
+            console.log('Alterado ' + $index);
             break;
         case 'DELETE':
             //TODO: capitura rota

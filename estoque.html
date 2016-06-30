@@ -35,13 +35,20 @@
                 };
                 $scope.alteraProduto = function($index) {
                     $scope.produto = $scope.estoque[$index];
+                    $scope.produto.index = $index;
                     $scope.produto.alterar = true;
                 }
                 $scope.alteraProdutoSalvar = function($index) {
-                    delete $scope.produto;
+                    delete $scope.produto.alterar;
+                    $http.put(API + '/' + $index, $scope.produto)
+                        .then(function(response) {
+                            delete $scope.produto;
+                            $scope.produtoForm.$setPristine();
+                        });
                 };
-                $scope.limpaProduto = function() {
+                $scope.limpaProduto = function(opt) {
                     delete $scope.produto;
+                    $scope.produto.alterar = opt;
                 };
                 $scope.ordenarPor = function(campo) {
                     $scope.criterioOrdenacao = campo;
@@ -102,11 +109,14 @@
                 <button type="button" ng-click="cadastrar(produto)" id="cadastrar" ng-disabled="produtoForm.$invalid" class="btn btn-success" ng-if="!produto.alterar">
                     <span class="glyphicon glyphicon-floppy-disk"></span> Cadastrar
                 </button>
-                <button type="button" id="alterar" class="btn btn-info" ng-if="produto.alterar" ng-disabled="produtoForm.$invalid" ng-click="alteraProdutoSalvar($index)">
+                <button type="button" id="alterar" ng-click="alteraProdutoSalvar(produto.index)" class="btn btn-info" ng-if="produto.alterar" ng-disabled="produtoForm.$invalid" ng-click="alteraProdutoSalvar($index)">
                     <span class="glyphicon glyphicon-minus"></span> Alterar
                 </button>
-                <button type="reset" id="limpar" class="btn btn-warning" ng-click="limpaProduto()">
+                <button type="reset" id="limpar" class="btn btn-warning" ng-click="limpaProduto(false)" ng-if="!produto.alterar">
                     <span class="glyphicon glyphicon-minus"></span> Limpar Campos
+                </button>
+                <button type="reset" id="cancelar" class="btn btn-warning" ng-click="limpaProduto(true)" ng-if="produto.alterar">
+                    <span class="glyphicon glyphicon-minus"></span> Cancelar
                 </button>
             </div>
             <div class="panel panel-default" id="table">
@@ -124,8 +134,8 @@
                             <td>{{produto.descricao}}</td>
                             <td>{{produto.qtd}}</td>
                             <td>{{produto.valor}}</td>
-                            <td><a href="" ng-click="deletaProduto($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
-                            <td><a href="" ng-click="alteraProduto($index)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                            <td><a href="" ng-click="deletaProduto($index)" ng-if="!produto.alterar"><span class="glyphicon glyphicon-trash"></span></a></td>
+                            <td><a href="" ng-click="alteraProduto($index)" ng-if="!produto.alterar"><span class="glyphicon glyphicon-pencil"></span></a></td>
                         </tr>
                     </tbody>
                 </table>
