@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script>
+            var get = function(url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        callback(xhr.responseText, xhrStatus);
+                    }
+                };
+                xhr.open('GET', url);
+                xhr.send(null);
+            };
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>

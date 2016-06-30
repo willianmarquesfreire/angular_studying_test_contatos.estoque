@@ -23,25 +23,36 @@
         </style>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
-        <script src="/bower_components/angular-locale-pt-br/angular-locale_pt-br.js"></script>
+        <script src="bower_components/angular-locale-pt-br/angular-locale_pt-br.js"></script>
         <script>
             var app = angular.module("listaTelefonica", ["ngMessages"]);
-            app.controller("listaTelefonicaCtrl",function($scope, $filter) {
+            app.controller("listaTelefonicaCtrl",function($scope, $filter, $http) {
                 $scope.app = "Lista Telefonica";
-                $scope.contatos = [
-                    {nome: "Willian10", telefone: "99998888", cor: "yellow", data: new Date()},
-                    {nome: "Willian5", telefone: "99994444", cor: "blue", data: new Date()},
-                    {nome: "Willian2", telefone: "99995556", cor: "red", data: new Date()}
-                ];
-                $scope.operadoras = [
-                    {nome: "Oi", codigo: 14, categoria: "Telefone", preco: 2},
-                    {nome: "Vivo", codigo: 15, categoria: "Celular", preco: 1},
-                    {nome: "Tim", codigo: 41, categoria: "Celular", preco: 3}
-                ];
+
+                var API_CONTATOS = "http://localhost:3000";
+                var API_OPERADORAS = "http://localhost:3001";
+
+                var carregarContatos = function() {
+                    $http.get(API_CONTATOS).success(function(data, status) {
+                        $scope.contatos = data;
+                    });
+                };
+                
+                var carregarOperadoras = function() {
+                    $http.get(API_OPERADORAS).success(function(data, status) {
+                        $scope.operadoras = data;
+                    });
+                };
+
                 $scope.adicionarContato = function(contato) {
-                    $scope.contatos.push(contato);
-                    delete $scope.contato;
-                    $scope.contatoForm.$setPristine();
+                    contato.data = new Date();
+                    $http.post(API_CONTATOS, contato).success(function(data) {
+                        delete $scope.contato;
+                        $scope.contatoForm.$setPristine();
+                        carregarContatos();
+                    }).error(function(data, status) {
+                        console.log("ERRO");
+                    });;
                 }
                 $scope.apagarContatos = function(contatos) {
                     $scope.contatos = contatos.filter(function(contato) {
@@ -57,6 +68,8 @@
                     $scope.criterioDeOrdenacao = campo;
                     $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
                 }
+                carregarContatos();
+                carregarOperadoras();
             });
         </script>
    </head>
