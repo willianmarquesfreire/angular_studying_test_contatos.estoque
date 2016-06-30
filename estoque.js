@@ -6,8 +6,7 @@ var estoque = [];
 
 var port = 3000;
 var app = http.createServer(function(req,res, callback) {
-    
-                
+
      var queryData = "";
      
      res.writeHead(200, {
@@ -25,20 +24,18 @@ var app = http.createServer(function(req,res, callback) {
                     res.writeHead(413, {'Content-Type': 'text/plain'}).end();
                     req.connection.destroy();
                 }
-                
             });
             req.on('end', function() {
                 var obj = JSON.parse(queryData);
                 estoque.push(obj);
-                console.log("Inserido: " + obj);
+                console.log("Inserido: " + obj["descricao"]);
             });
             break;
         case 'GET':
             console.log('Requisitado!');
             break;
         case 'PUT':
-            var $index = req.url.toString().substr(1,req.url.length);
-            
+            var $index = req.url.toString().substr(1,req.url.length); 
             req.on('data', function(data) {
                 queryData += data;
                 if (queryData.length > 1e6) {
@@ -47,23 +44,19 @@ var app = http.createServer(function(req,res, callback) {
                     req.connection.destroy();
                 }
             });
-            
             req.on('end', function(data) {
                 var obj = JSON.parse(queryData);
                 delete obj["index"];
                 estoque[$index] = obj;
             });
-            
             console.log('Alterado ' + $index);
             break;
         case 'DELETE':
             //TODO: capitura rota
             var $index = req.url.toString().substr(1,req.url.length);
             var result = estoque.splice($index, 1);
-            console.log('Deletado ' + result);
+            console.log('Deletado ' + $index);
             break;
-        default:
-        console.log("ERROR!");
      }
      res.end();
 }).listen(port, function() {
