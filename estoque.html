@@ -7,16 +7,26 @@
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script>
             var app = angular.module("estoque", []);
-            app.controller("estCtrl", function($scope) {
-                $scope.estoque = [
-                    {descricao: '5', qtd: 6, valor: 1.00},
-                    {descricao: '3', qtd: 3, valor: 5.00},
-                    {descricao: '4', qtd: 1, valor: 2.00},
-                    {descricao: '2', qtd: 2, valor: 4.00}
-                ];
+            var API = "http://localhost:3000";
+            app.controller("estCtrl", function($scope, $http) {
+                
+                var carregarContatos = function() {
+                    $http.get(API).success(function(data, status){
+                        $scope.estoque = data;
+                    });
+                };
+                
+                carregarContatos();
+                
                 $scope.cadastrar = function(produto) {
-                    $scope.estoque.push(produto);
-                    delete $scope.produto;
+                    $http.post(API, {a:1}).success(function(data) {
+                        console.log(data);
+                        delete $scope.produto;
+                        $scope.produtoForm.$setPristine();
+                        carregarContatos();
+                    }).error(function(){
+                        console.log("ERROR");
+                    });
                 };
                 $scope.deletaProduto = function($index) {
                     $scope.estoque.splice($index, 1);
