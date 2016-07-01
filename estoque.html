@@ -5,58 +5,8 @@
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
-        <script>
-            var app = angular.module("estoque", []);
-            var API = "http://172.16.0.150:3000";
-            app.controller("estCtrl", function($scope, $http) {
-                
-                var carregaProdutos = function() {
-                    $http.get(API).success(function(data, status){
-                        $scope.estoque = data;
-                    });
-                };
-                
-                carregaProdutos();
-                
-                $scope.cadastrar = function(produto) {
-                    $http.post(API, produto)
-                        .then(function(response) {
-                            console.log($scope.produto);
-                            delete $scope.produto;
-                            $scope.produtoForm.$setPristine();
-                            carregaProdutos();
-                        })
-                };
-                $scope.deletaProduto = function($index) {
-                    $http.delete(API + '/' + $index)
-                        .then(function(response) {
-                            carregaProdutos();
-                        })
-                };
-                $scope.alteraProduto = function($index) {
-                    $scope.produto = $scope.estoque[$index];
-                    $scope.produto.index = $index;
-                    $scope.produto.alterar = true;
-                }
-                $scope.alteraProdutoSalvar = function($index) {
-                    delete $scope.produto.alterar;
-                    $http.put(API + '/' + $index, $scope.produto)
-                        .then(function(response) {
-                            delete $scope.produto;
-                            $scope.produtoForm.$setPristine();
-                        });
-                };
-                $scope.limpaProduto = function() {
-                    $scope.produtoForm.$setPristine();
-                    delete $scope.produto;
-                };
-                $scope.ordenarPor = function(campo) {
-                    $scope.criterioOrdenacao = campo;
-                    $scope.direcaoOrdenacao = !$scope.direcaoOrdenacao;
-                }
-                
-            });
-        </script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/estCtrl.js"></script>
         <style>
             .input-group {
                 margin-top: 2px;

@@ -3,75 +3,12 @@
         <meta charset="UTF-8">
         <title>Lista Telefonica</title>
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
-        <style>
-            .jumbotron {
-                width: 600px;
-                text-align: center;
-                margin-top: 20px;
-                margin-right: auto;
-                margin-left: auto;
-            }
-            .table {
-                margin-top: 20px;
-            }
-            .selecionado {
-                background-color: yellow;
-            }
-            .negrito {
-                font-weight: bold;
-            }
-        </style>
+        <link rel="stylesheet" href="css/style.css">
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script src="bower_components/angular-locale-pt-br/angular-locale_pt-br.js"></script>
-        <script>
-            var app = angular.module("listaTelefonica", ["ngMessages"]);
-            app.controller("listaTelefonicaCtrl",function($scope, $filter, $http) {
-                $scope.app = "Lista Telefonica";
-
-                var API_CONTATOS = "http://localhost:3000";
-                var API_OPERADORAS = "http://localhost:3001";
-
-                var carregarContatos = function() {
-                    $http.get(API_CONTATOS).success(function(data, status) {
-                        $scope.contatos = data;
-                    });
-                };
-                
-                var carregarOperadoras = function() {
-                    $http.get(API_OPERADORAS).success(function(data, status) {
-                        $scope.operadoras = data;
-                    });
-                };
-
-                $scope.adicionarContato = function(contato) {
-                    contato.data = new Date();
-                    $http.post(API_CONTATOS, contato).success(function(data) {
-                        delete $scope.contato;
-                        $scope.contatoForm.$setPristine();
-                        carregarContatos();
-                    }).error(function(data, status) {
-                        console.log("ERRO");
-                    });;
-                }
-                $scope.apagarContatos = function(contatos) {
-                    $scope.contatos = contatos.filter(function(contato) {
-                        if (!contato.selecionado) return contato;
-                    });
-                }
-                $scope.isContatoSelecionado = function(contatos) {
-                    return contatos.some(function(contato) {
-                        return contato.selecionado;
-                    });
-                }
-                $scope.ordenarPor = function(campo) {
-                    $scope.criterioDeOrdenacao = campo;
-                    $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
-                }
-                carregarContatos();
-                carregarOperadoras();
-            });
-        </script>
+        <script src="js/app.js"></script>
+        <script src="js/controllers/listaTelefonicaCtrl.js"></script>
    </head>
     <body ng-controller="listaTelefonicaCtrl">
         <div class="jumbotron">
@@ -116,6 +53,6 @@
             <button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
             <button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">Apagar Contatos</button>
         </div>
-        <div ng-include="'footer.html'"></div>
+        <div ng-include="'view/footer.html'"></div>
     </body>
 </html>
