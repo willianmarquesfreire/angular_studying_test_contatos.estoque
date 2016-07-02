@@ -1,5 +1,7 @@
 app.controller("listaTelefonicaCtrl",function($scope, $filter, contatosAPI, operadorasAPI, serialGenerator) {
                 $scope.app = "Lista Telefonica";
+                $scope.contatos = [];
+                $scope.operadoras = [];
 
                 var API = "http://localhost:3000";
 
@@ -7,6 +9,8 @@ app.controller("listaTelefonicaCtrl",function($scope, $filter, contatosAPI, oper
                     contatosAPI.getContatos().success(function(data, status) {
                         $scope.contatos = data;
                         console.log(data);
+                    }).error(function() {
+                        $scope.error = "Erro ao carregar Contatos!";
                     });
                 };
                 
@@ -14,6 +18,8 @@ app.controller("listaTelefonicaCtrl",function($scope, $filter, contatosAPI, oper
                     operadorasAPI.getOperadoras().success(function(data, status) {
                         $scope.operadoras = data;
                         console.log(data);
+                    }).error(function() {
+                        $scope.error = "Erro ao carregar Operadoras!";
                     });
                 };
 

@@ -4,6 +4,7 @@
         <title>Lista Telefonica</title>
         <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/ui.css">
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/angular-messages/angular-messages.js"></script>
         <script src="bower_components/angular-locale-pt-br/angular-locale_pt-br.js"></script>
@@ -14,10 +15,19 @@
         <script src="js/value/configValue.js"></script>
         <script src="js/services/serialGeneratorService.js"></script>
         <script src="js/config/serialGeneratorConfig.js"></script>
+        <script src="js/filters/nameFilter.js"></script>
+        <script src="js/filters/ellipsis.js"></script>
+        <script src="js/directives/uiAlertDirective.js"></script>
+        <script src="js/directives/uiDateDirective.js"></script>
+        <script src="js/directives/uiAccordionDirective.js"></script>
    </head>
     <body ng-controller="listaTelefonicaCtrl">
         <div class="jumbotron">
+            
             <h3>{{app}}</h3>
+            <ui-alert title="Ops, Ocorreu um problema" message="error">
+                Transclude mantém o que tem dentro da tag
+            </ui-alert>
             <input type="text" class="form-control" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
             <table class="table table-striped" ng-show="contatos.length > 0">
                 <tr>
@@ -32,7 +42,7 @@
                 <tr ng-class="{'selecionado negrito': contato.selecionado}" ng-repeat="contato in contatos | filter:criterioDeBusca | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
                     <td><input type="checkbox" ng-model="contato.selecionado"></td>
                     <td>{{contato.serial}}</td>
-                    <td>{{contato.nome}}</td>
+                    <td>{{contato.nome | name | ellipsis:10}}</td>
                     <td>{{contato.telefone}}</td>
                     <td>{{contato.operadora.nome}}</td>
                     <td>{{contato.data | date:'EEE dd/MM/yyyy hh:mm'}}</td>
@@ -43,6 +53,7 @@
             <form id="form1" name="contatoForm" data-toggle="validator" role="form">
                 <input class="form-control" type="text" ng-model="contato.nome" name="nome" placeholder="nome" ng-required="true" ng-minlength="10" required>
                 <input class="form-control" type="text" ng-model="contato.telefone" name="telefone" placeholder="telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
+                <input type="text" class="form-control" ng-model="contato.data" name="data" placeholder="Data" ui-date>
                 <select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome + ' (' + (operadora.preco | currency) + ')' group by operadora.categoria for operadora in operadoras | orderBy:'nome'">
                     <option value="">Selecione uma operadora</option>
                 </select>
