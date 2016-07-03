@@ -1,2 +1,2 @@
-var app = angular.module("listaTelefonica", ["ngMessages"]);
+var app = angular.module("listaTelefonica", ["ngMessages", "serialGenerator", "ui", "ngRoute"]);
 var estoque = angular.module("estoque", []);
