@@ -1,0 +1,61 @@
+<div ng-controller="estoqueCtrl">
+    <div class="container-fluid">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand">
+                            Estoque
+                        </a>
+                </div>
+            </div>
+            <div ng-messages="produtoForm.descricao.$error" ng-show="produtoForm.descricao.$dirty && produtoForm.descricao.$invalid"
+                class="alert alert-danger">
+                <div ng-message="required">
+                    Por favor, preencha o campo descrição.
+                </div>
+            </div>
+            <div ng-messages="produtoForm.qtd.$error" ng-show="produtoForm.qtd.$dirty && produtoForm.qtd.$invalid" class="alert alert-danger">
+                <div ng-message="required">
+                    Por favor, preencha o campo quantidade.
+                </div>
+            </div>
+        </nav>
+        <form name="produtoForm">
+            <div class="form-group">
+                <div class="input-group" ng-class="produtoForm.descricao.$error.required && produtoForm.descricao.$dirty ? 'has-error' : 'has-warning'">
+                    <label for="descricao" class="input-group-addon">Descrição</label>
+                    <input type="text" name="descricao" id="descricao" ng-model="produto.descricao" ng-required="true" class="form-control form-control-success"
+                        placeholder="Digite uma descrição">
+                </div>
+                <div class="input-group">
+                    <label for="qtd" class="input-group-addon">Quantidade: </label>
+                    <input type="number" name="qtd" id="qtd" ng-model="produto.qtd" ng-required="true" class="form-control" placeholder="Digite uma quantidade">
+                </div>
+                <div class="input-group">
+                    <label for="valor" class="input-group-addon">$ </label>
+                    <input type="text" name="valor" id="valor" ng-model="produto.valor" class="form-control" placeholder="Digite um Valor">
+                    <span class="input-group-addon">.00</span>
+                </div>
+            </div>
+        </form>
+        <div class="btn-group btn-group-justified" role="group"></div>
+        <button type="button" ng-click="cadastrar(produto)" id="cadastrar" ng-disabled="produtoForm.$invalid" class="btn btn-success"
+            ng-if="!produto.alterar">
+                    <span class="glyphicon glyphicon-floppy-disk"></span> Cadastrar
+                </button>
+        <button type="button" id="alterar" ng-click="alteraProdutoSalvar(produto.index)" class="btn btn-info" ng-if="produto.alterar"
+            ng-disabled="produtoForm.$invalid" ng-click="alteraProdutoSalvar($index)">
+                    <span class="glyphicon glyphicon-minus"></span> Alterar
+                </button>
+        <button type="reset" id="limparCampos" class="btn btn-warning" ng-if="!produto.alterar" ng-click="limpaProduto()">
+                    <span class="glyphicon glyphicon-minus"></span> Limpar Campos
+                </button>
+        <button type="reset" id="cancelar" class="btn btn-warning" ng-click="limpaProduto()" ng-if="produto.alterar">
+                    <span class="glyphicon glyphicon-minus"></span> Cancelar
+                </button>
+        <a class="btn btn-success" ng-href="{{listagemLink}}" ng-click="inverteListagem()">Listar Estoque</a>
+    </div>
+    <hr>
+
+
+</div>

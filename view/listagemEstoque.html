@@ -1,0 +1,21 @@
+<div class="panel panel-default" id="table">
+    <div class="panel-heading">Listagem do Estoque</div>
+    <table class="table">
+        <thead>
+            <th><a href="" ng-click="ordenarPor('descricao')">Descrição</a></th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="produto in estoque | orderBy:criterioOrdenacao:direcaoOrdenacao">
+                <td>{{produto.descricao}}</td>
+                <td>{{produto.qtd}}</td>
+                <td>{{produto.valor}}</td>
+                <td><a href="" ng-click="deletaProduto($index)"><span class="glyphicon glyphicon-trash"></span></a></td>
+                <td><a href="" ng-click="alteraProduto($index)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

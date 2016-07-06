@@ -1,4 +1,7 @@
-angular.module("listaTelefonica").directive("uiAlert", function() {
+angular.module("listaTelefonica")
+    .directive("uiAlert", uiAlertDirective);
+
+function uiAlertDirective() {
     return {
         templateUrl: "view/alert.html",
         replace: true,
@@ -9,4 +12,4 @@ angular.module("listaTelefonica").directive("uiAlert", function() {
         },
         transclude: true
     };
-});
+}

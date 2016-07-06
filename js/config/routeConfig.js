@@ -1,12 +1,28 @@
-angular.module("listaTelefonica").config(function($routeProvider) {
-    $routeProvider.when("/contatos", {
+/** Rotas de Estoque */
+angular.module("estoque")
+    .config(estoqueRoutes);
+
+function estoqueRoutes($routeProvider) {
+    console.log($routeProvider);
+    $routeProvider.when("/listar", {
+        templateUrl: "view/listagemEstoque.html",
+        controller: "estoqueCtrl"
+    });
+    $routeProvider.otherwise({ redirectTo: "/" });
+}
+/** Rotas de Lista Telefonica */
+angular.module("listaTelefonica")
+    .config(contatosRoutes);
+
+function contatosRoutes($routeProvider) {
+    $routeProvider.when("/", {
         templateUrl: "view/contatos.html",
         controller: "listaTelefonicaCtrl",
         resolve: {
-            contatos: function(contatosAPI) {
+            contatos: function (contatosAPI) {
                 return contatosAPI.getContatos();
             },
-            operadoras: function(operadorasAPI) {
+            operadoras: function (operadorasAPI) {
                 return operadorasAPI.getOperadoras();
             }
         }
@@ -15,7 +31,7 @@ angular.module("listaTelefonica").config(function($routeProvider) {
         templateUrl: "view/novoContato.html",
         controller: "novoContatoCtrl",
         resolve: {
-            operadoras: function(operadorasAPI) {
+            operadoras: function (operadorasAPI) {
                 return operadorasAPI.getOperadoras();
             }
         }
@@ -24,10 +40,13 @@ angular.module("listaTelefonica").config(function($routeProvider) {
         templateUrl: "view/detalhesContato.html",
         controller: "detalhesContatoCtrl",
         resolve: {
-            contato: function(contatosAPI, $route) {
+            contato: function (contatosAPI, $route) {
                 return contatosAPI.getContato($route.current.params.id);
             }
         }
     });
-    $routeProvider.otherwise({redirectTo: "/contatos"});
-});
+    $routeProvider.when("/error", {
+        templateUrl: "view/error.html"
+    });
+    $routeProvider.otherwise({ redirectTo: "/" });
+}

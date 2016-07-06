@@ -1,3 +1,6 @@
-app.controller("detalhesContatoCtrl",function($scope, $routeParams, contato) {
+angular.module("listaTelefonica")
+    .controller("detalhesContatoCtrl", detalhesContato);
+
+function detalhesContato($scope, contato) {
     $scope.contato = contato;
-});
+}
